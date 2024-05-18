@@ -1,6 +1,6 @@
 "use client";
 
-import Calendar from "@/components/common/Calendar";
+import GetItem from "@/components/common/GetItem";
 import ListItem from "@/components/common/ListItem";
 import { theme } from "@/styles/theme";
 import Image from "next/image";
@@ -16,35 +16,19 @@ const ClassAnnouncement = () => {
 
   return (
     <div>
-      <Title>알림장</Title>
-      <WriteDate>
-        <Text>작성일자</Text>
-        <Calendar value={date} onChange={handleDateChange} />
-      </WriteDate>
       <ListBox>
         <Head>
-          <div>설명</div>
+          <div>목록</div>
           <div>학부모 투두 연동 여부</div>
           <div>카테고리</div>
           <div>마감기한 설정</div>
         </Head>
-        <ListItem />
-        <ListItem />
-        <ListItem />
+        <GetItem />
+        <GetItem />
+        <GetItem />
+        <GetItem />
         <Foot>
-          <AddButton>
-            <Image
-              src="/assets/icons/ic_plus.svg"
-              alt="calendar"
-              width={24}
-              height={24}
-            />
-            알림장 추가하기
-          </AddButton>
-          <Gap>
-            <Send>카카오톡으로 알림장 보내기</Send>
-            <Save>변경사항 저장하기</Save>
-          </Gap>
+          <Save>변경사항 저장하기</Save>
         </Foot>
       </ListBox>
     </div>
@@ -90,7 +74,7 @@ const Head = styled.div`
 
 const Foot = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
 `;
 

@@ -12,6 +12,6 @@ export default layout;
 const Container = styled.div`
   width: 100%;
   height: 100vh;
-  padding: 104px;
+  padding: 80px;
   background-color: ${theme.colors.b80};
 `;
