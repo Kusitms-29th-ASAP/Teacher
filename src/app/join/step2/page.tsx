@@ -72,11 +72,22 @@ const Step2 = () => {
               />
             </Row>
           </div>
-          <StyledButton
-            text="다음"
-            onClick={handleNext}
-            disabled={isDisabled}
-          />
+          <div>
+            <BeforeButton>
+              <Image
+                src="/assets/icons/ic_chevron_right.svg"
+                width={20}
+                height={20}
+                alt="back"
+              />
+              이전 단계
+            </BeforeButton>
+            <StyledButton
+              text="다음"
+              onClick={handleNext}
+              disabled={isDisabled}
+            />
+          </div>
         </Gap>
       </Box>
     </Container>
@@ -130,6 +141,13 @@ const Label = styled.div`
 const Row = styled.div`
   display: flex;
   gap: 11px;
+`;
+
+const BeforeButton = styled.div`
+  display: flex;
+  align-items: center;
+  color: ${theme.colors.primary500};
+  ${(props) => props.theme.fonts.body3_m};
 `;
 
 const StyledButton = styled(Button)`
