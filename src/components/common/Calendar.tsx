@@ -33,12 +33,12 @@ const Calendar = ({ value, onChange, color }: CalendarProps) => {
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <StyledDemoContainer components={["DatePicker"]}>
           <CustomInputContainer>
-            <CalendarInput
+            {/* <CalendarInput
               value={value}
               placeholder="날짜를 선택해주세요"
               onChange={() => {}}
-              readonly={true}
-            />
+              readOnly
+            /> */}
             <IconImage
               src="/assets/icons/ic_calender.svg"
               alt="calendar"
@@ -78,12 +78,12 @@ const StyledMobileDatePicker = styled(MobileDatePicker)({
   "& .MuiInputBase-root": { height: "44px" },
 });
 
-const CalendarInput = styled(CustomInput)({
-  // width: "440px",
-  position: "absolute",
-  top: "0",
-  left: "0",
-});
+// const CalendarInput = styled.input`
+//   width: 440px;
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+// `;
 
 const IconImage = styled(Image)({
   position: "absolute",

@@ -67,7 +67,7 @@ const CustomInput = (props: CustomInputProps) => {
       {inputType === "select" && (
         <ImageContainer>
           <Image
-            src="/assets/common/down_arrow.svg"
+            src="/assets/icons/ic_down_arrow.svg"
             alt="arrow"
             width={20}
             height={20}
@@ -95,7 +95,7 @@ const StyledInput = styled.input<CustomInputProps>`
   align-items: center;
   gap: 10px;
   border-radius: 10px;
-  /* border: 1px solid ${theme.colors.primary100};/ */
+  border: 1px solid ${theme.colors.primary100};
   background: ${(props) => (props.value ? "rgba(255, 135, 0, 0.05)" : "white")};
   color: ${(props) =>
     props.hidden ? "rgba(255, 135, 0, 0.01)" : theme.colors.b700};

@@ -3,7 +3,7 @@
 import GlobalStyles from "@/styles/GlobalStyles";
 import { ThemeProvider } from "styled-components";
 import { theme } from "@/styles/theme";
-import Header from "@/components/Header";
+import Header from "@/components/common/Header";
 
 export default function RootLayout({
   children,

@@ -18,23 +18,25 @@ const Header = () => {
   return (
     <Container>
       <Image src="/assets/icons/logo.svg" width={143} height={32} alt="logo" />
-      <Div>
-        <Tabbar>
-          <Tab
-            onClick={() => handleTab("/classAnnouncement")}
-            selected={pathname === "/classAnnouncement"}
-          >
-            알림장
-          </Tab>
-          <Tab
-            onClick={() => handleTab("/notification")}
-            selected={pathname === "/notification"}
-          >
-            가정통신문
-          </Tab>
-        </Tabbar>
-        <Info>서울양원숲초등학교 3학년 2반 김교사</Info>
-      </Div>
+      {(pathname === "/classAnnouncement" || "/notification") && (
+        <Div>
+          <Tabbar>
+            <Tab
+              onClick={() => handleTab("/classAnnouncement")}
+              selected={pathname === "/classAnnouncement"}
+            >
+              알림장
+            </Tab>
+            <Tab
+              onClick={() => handleTab("/notification")}
+              selected={pathname === "/notification"}
+            >
+              가정통신문
+            </Tab>
+          </Tabbar>
+          <Info>서울양원숲초등학교 3학년 2반 김교사</Info>
+        </Div>
+      )}
     </Container>
   );
 };
@@ -49,6 +51,9 @@ const Container = styled.div`
   align-items: center;
   gap: 779px;
   background: ${theme.colors.b800};
+  position: fixed;
+  top: 0;
+  left: 0;
 `;
 
 const Tabbar = styled.div`
