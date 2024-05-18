@@ -4,8 +4,9 @@ import styled from "styled-components";
 import Image from "next/image";
 
 export interface CustomInputProps {
-  inputType?: "text" | "select";
+  inputType?: "text" | "select" | "password";
   value: any;
+  size?: "small" | "medium" | "large";
   onChange: (value: any) => void;
   onClick?: () => void;
   color?: "black";
@@ -23,6 +24,7 @@ const CustomInput = (props: CustomInputProps) => {
     onChange,
     onClick,
     color,
+    size,
     placeholder,
     readonly = false,
     disabled = false,
@@ -31,8 +33,8 @@ const CustomInput = (props: CustomInputProps) => {
   } = props;
 
   let inputClassName = inputType;
-  if (inputType) {
-    inputClassName += " " + inputType;
+  if (size) {
+    inputClassName += " " + size;
   }
 
   if (color) {
@@ -52,11 +54,12 @@ const CustomInput = (props: CustomInputProps) => {
   return (
     <Container onClick={handleClick}>
       <StyledInput
-        type="text"
+        type={inputType === "password" ? "password" : "text"}
         value={value}
         onChange={handleChange}
         placeholder={placeholder}
         color={color}
+        size={size}
         className={inputClassName}
         readOnly={readonly}
         disabled={disabled}
@@ -135,6 +138,11 @@ const StyledInput = styled.input<CustomInputProps>`
     &:disabled {
       color: ${theme.colors.b700};
     }
+  }
+
+  &.small {
+    width: 72px;
+    height: 44px;
   }
 `;
 
