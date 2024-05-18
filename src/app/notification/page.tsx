@@ -1,10 +1,10 @@
 "use client";
 
-import Calendar from "@/components/common/Calendar";
+import GetItem from "@/components/common/GetItem";
 import ListItem from "@/components/common/ListItem";
 import { theme } from "@/styles/theme";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 
 const ClassAnnouncement = () => {
@@ -14,65 +14,21 @@ const ClassAnnouncement = () => {
     setDate(value);
   };
 
-  const handleShareKakaoClick = () => {
-    const { Kakao, location } = window;
-    Kakao.Share.sendDefault({
-      objectType: "feed",
-      content: {
-        title:
-          "4월 22일 월요일, 김동우 학생의 알림장이 게시되었습니다. 지금 바로 확인해보세요!",
-        imageUrl:
-          "https://kr.object.ncloudstorage.com/school-point/default_image/kakao_alarm.png",
-        link: {
-          mobileWebUrl: "https://developers.kakao.com",
-          webUrl: "https://developers.kakao.com",
-        },
-      },
-      buttons: [
-        {
-          title: "알림장 바로가기",
-          link: {
-            mobileWebUrl: "https://developers.kakao.com",
-            webUrl: "https://developers.kakao.com",
-          },
-        },
-      ],
-    });
-  };
-
   return (
     <div>
-      <Title>알림장</Title>
-      <WriteDate>
-        <Text>작성일자</Text>
-        <Calendar value={date} onChange={handleDateChange} />
-      </WriteDate>
       <ListBox>
         <Head>
-          <div>설명</div>
+          <div>목록</div>
           <div>학부모 투두 연동 여부</div>
           <div>카테고리</div>
           <div>마감기한 설정</div>
         </Head>
-        <ListItem />
-        <ListItem />
-        <ListItem />
+        <GetItem />
+        <GetItem />
+        <GetItem />
+        <GetItem />
         <Foot>
-          <AddButton>
-            <Image
-              src="/assets/icons/ic_plus.svg"
-              alt="calendar"
-              width={24}
-              height={24}
-            />
-            알림장 추가하기
-          </AddButton>
-          <Gap>
-            <Send onClick={handleShareKakaoClick}>
-              카카오톡으로 알림장 보내기
-            </Send>
-            <Save>변경사항 저장하기</Save>
-          </Gap>
+          <Save>변경사항 저장하기</Save>
         </Foot>
       </ListBox>
     </div>
@@ -118,7 +74,7 @@ const Head = styled.div`
 
 const Foot = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
 `;
 
