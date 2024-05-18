@@ -4,7 +4,7 @@ import Calendar from "@/components/common/Calendar";
 import ListItem from "@/components/common/ListItem";
 import { theme } from "@/styles/theme";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const ClassAnnouncement = () => {
@@ -12,6 +12,32 @@ const ClassAnnouncement = () => {
 
   const handleDateChange = (value: string) => {
     setDate(value);
+  };
+
+  const handleShareKakaoClick = () => {
+    const { Kakao, location } = window;
+    Kakao.Share.sendDefault({
+      objectType: "feed",
+      content: {
+        title:
+          "4월 22일 월요일, 김동우 학생의 알림장이 게시되었습니다. 지금 바로 확인해보세요!",
+        imageUrl:
+          "https://kr.object.ncloudstorage.com/school-point/default_image/kakao_alarm.png",
+        link: {
+          mobileWebUrl: "https://developers.kakao.com",
+          webUrl: "https://developers.kakao.com",
+        },
+      },
+      buttons: [
+        {
+          title: "알림장 바로가기",
+          link: {
+            mobileWebUrl: "https://developers.kakao.com",
+            webUrl: "https://developers.kakao.com",
+          },
+        },
+      ],
+    });
   };
 
   return (
@@ -42,7 +68,9 @@ const ClassAnnouncement = () => {
             알림장 추가하기
           </AddButton>
           <Gap>
-            <Send>카카오톡으로 알림장 보내기</Send>
+            <Send onClick={handleShareKakaoClick}>
+              카카오톡으로 알림장 보내기
+            </Send>
             <Save>변경사항 저장하기</Save>
           </Gap>
         </Foot>
