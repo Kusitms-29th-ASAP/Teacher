@@ -40,7 +40,7 @@ const Step2 = () => {
             <Label>아이디</Label>
             <CustomInput
               value={id}
-              onChange={() => setName(id)}
+              onChange={() => setId(id)}
               placeholder="아이디를 입력해주세요."
             />
           </div>
