@@ -5,6 +5,7 @@ import { ThemeProvider } from "styled-components";
 import { theme } from "@/styles/theme";
 import Header from "@/components/common/Header";
 import KakaoScript from "@/components/KakaoScript";
+import NOSSR from "@/components/common/NOSSR";
 
 declare global {
   interface Window {
@@ -27,7 +28,7 @@ export default function RootLayout({
         <GlobalStyles />
         <ThemeProvider theme={theme}>
           <Header />
-          {children}
+          <NOSSR>{children}</NOSSR>
         </ThemeProvider>
       </body>
     </html>
