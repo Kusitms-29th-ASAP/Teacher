@@ -5,26 +5,30 @@ import Checkbox from "./Checkbox";
 import Image from "next/image";
 import Category from "./Category";
 
-const categoryClass = ["가정통신문", "준비물", "숙제", "기타"];
+const categoryNoti = [
+  "급식",
+  "교내외 프로그램",
+  "학교 운영",
+  "보건",
+  "학교 일정",
+  "교육 혜택",
+  "생활/안전",
+  "기타",
+];
 
-const ListItem = () => {
-  const [todo, setTodo] = useState("");
+const GetItem = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
 
   return (
     <ListBox>
       <Description>
-        <Input
-          value={todo}
-          onChange={(e) => setTodo(e.target.value)}
-          placeholder="내용을 입력해주세요"
-        />
+        <Title>가정통신문</Title>
       </Description>
       <Checkbox />
       <Category
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
-        data={categoryClass}
+        data={categoryNoti}
       />
       <DeadLine>
         <Image
@@ -39,7 +43,7 @@ const ListItem = () => {
   );
 };
 
-export default ListItem;
+export default GetItem;
 
 const ListBox = styled.div`
   width: 100%;
@@ -58,20 +62,12 @@ const Description = styled.div`
   background: ${theme.colors.b80};
 `;
 
-const Input = styled.input`
+const Title = styled.div`
   width: 100%;
   border: none;
   background: transparent;
   color: ${theme.colors.b700};
   ${(props) => props.theme.fonts.body2_m};
-
-  &:focus {
-    outline: none;
-  }
-  &::placeholder {
-    color: ${theme.colors.b300};
-    ${(props) => props.theme.fonts.body2_r};
-  }
 `;
 
 const DeadLine = styled.div`

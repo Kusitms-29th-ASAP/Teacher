@@ -8,17 +8,57 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import styled from "styled-components";
 
+interface Info {
+  name: string;
+  school: string;
+  grade: string;
+  classInfo: string;
+}
+
+const gradeData = ["1학년", "2학년", "3학년", "4학년", "5학년", "6학년"];
+const classData = ["1반", "2반", "3반", "4반", "5반", "6반"];
+
 const Step1 = () => {
   const router = useRouter();
-  const [name, setName] = useState("");
-  const [school, setSchool] = useState("");
-  const [grade, setGrade] = useState("");
-  const [classInfo, setClassInfo] = useState("");
+  const [openDropdownGrade, setOpenDropdownGrade] = useState(false);
+  const [openDropdownClass, setOpenDropdownClass] = useState(false);
+  const [info, setInfo] = useState<Info>({
+    name: "",
+    school: "",
+    grade: "",
+    classInfo: "",
+  });
 
-  let isDisabled = !name || !school || !grade || !classInfo;
+  let isDisabled = !info.name || !info.school || !info.grade || !info.classInfo;
 
+  const handleChangeName = (value: string) => {
+    setInfo({ ...info, name: value });
+    console.log(info);
+  };
+
+  const handleSelectDropGrade = (selectedDrop: string) => {
+    setInfo({ ...info, grade: selectedDrop });
+    setOpenDropdownGrade(false);
+  };
+
+  const handleSelectDropClass = (selectedDrop: string) => {
+    setInfo({ ...info, classInfo: selectedDrop });
+    setOpenDropdownClass(false);
+  };
+
+  const handleChangeSchool = (value: string) => {
+    setInfo({ ...info, school: value });
+  };
   const handleSearch = () => {
     alert("검색");
+  };
+
+  const handleSelectClickGrade = () => {
+    setOpenDropdownGrade(!openDropdownGrade);
+  };
+
+  const handleSelectClickClass = () => {
+    setOpenDropdownClass(!openDropdownClass);
   };
 
   const handleNext = () => {
@@ -39,8 +79,8 @@ const Step1 = () => {
           <div>
             <Label>교사 이름</Label>
             <CustomInput
-              value={name}
-              onChange={() => setName(name)}
+              value={info.name}
+              onChange={handleChangeName}
               placeholder="김교사"
             />
           </div>
@@ -48,28 +88,65 @@ const Step1 = () => {
             <Label>담당 학교</Label>
             <Row>
               <CustomInput
-                value={school}
-                onChange={() => setSchool(school)}
+                value={info.school}
+                onChange={handleChangeSchool}
                 placeholder="학교의 이름을 입력해주세요."
               />
-              <Button text="검색" onClick={handleSearch} disabled={!school} />
+              <SearchButton>
+                <Button
+                  text="검색"
+                  onClick={handleSearch}
+                  disabled={!info.school}
+                  size="small"
+                />
+              </SearchButton>
             </Row>
           </div>
           <div>
             <Label>담당학급</Label>
             <Row>
-              <CustomInput
-                inputType="select"
-                value={grade}
-                onChange={() => setGrade(grade)}
-                placeholder="학급"
-              />
-              <CustomInput
-                inputType="select"
-                value={classInfo}
-                onChange={() => setClassInfo(classInfo)}
-                placeholder="반"
-              />
+              <Contain>
+                <CustomInput
+                  inputType="select"
+                  value={info.grade}
+                  onClick={handleSelectClickGrade}
+                  onChange={() => {}}
+                  placeholder="학급"
+                />
+                {openDropdownGrade && (
+                  <DropDown>
+                    {gradeData.map((data, index) => (
+                      <Cusor
+                        key={index}
+                        onClick={() => handleSelectDropGrade(data)}
+                      >
+                        {data}
+                      </Cusor>
+                    ))}
+                  </DropDown>
+                )}
+              </Contain>
+              <Contain>
+                <CustomInput
+                  inputType="select"
+                  value={info.classInfo}
+                  onClick={handleSelectClickClass}
+                  onChange={() => {}}
+                  placeholder="반"
+                />
+                {openDropdownClass && (
+                  <DropDown>
+                    {classData.map((data, index) => (
+                      <Cusor
+                        key={index}
+                        onClick={() => handleSelectDropClass(data)}
+                      >
+                        {data}
+                      </Cusor>
+                    ))}
+                  </DropDown>
+                )}
+              </Contain>
             </Row>
           </div>
           <StyledButton
@@ -132,6 +209,39 @@ const Row = styled.div`
   gap: 11px;
 `;
 
+const SearchButton = styled.div`
+  width: 72px;
+  height: 42px;
+`;
+
 const StyledButton = styled(Button)`
   margin-top: 54px;
+`;
+
+const Contain = styled.div`
+  width: 100%;
+  position: relative;
+`;
+
+const DropDown = styled.div`
+  width: 100%;
+  position: absolute;
+  top: 44px;
+  left: 0;
+  padding: 16px 21px 16px 16px;
+  border-radius: 10px;
+  border: 1px solid ${theme.colors.b200};
+  background: ${theme.colors.white};
+  box-shadow: 0px 2px 64px 0px rgba(30, 41, 59, 0.06);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  color: ${theme.colors.b500};
+  ${(props) => props.theme.fonts.body3_b};
+  white-space: nowrap;
+`;
+
+const Cusor = styled.div`
+  cursor: pointer;
 `;

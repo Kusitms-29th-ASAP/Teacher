@@ -8,17 +8,32 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import styled from "styled-components";
 
+interface Info {
+  id: string;
+  password: string;
+  rePassword: string;
+}
+
 const Step2 = () => {
   const router = useRouter();
-  const [id, setId] = useState("");
-  const [school, setSchool] = useState("");
-  const [grade, setGrade] = useState("");
-  const [classInfo, setClassInfo] = useState("");
+  const [info, setInfo] = useState<Info>({
+    id: "",
+    password: "",
+    rePassword: "",
+  });
 
-  let isDisabled = !id || !school || !grade || !classInfo;
+  let error = info.password !== info.rePassword;
+  let isDisabled = !info.id || !info.password || !info.rePassword;
 
-  const handleSearch = () => {
-    alert("검색");
+  const handleChangeId = (value: string) => {
+    setInfo({ ...info, id: value });
+  };
+
+  const handleChangePassword = (value: string) => {
+    setInfo({ ...info, password: value });
+  };
+  const handleChangeRePassword = (value: string) => {
+    setInfo({ ...info, rePassword: value });
   };
 
   const handleNext = () => {
@@ -39,41 +54,34 @@ const Step2 = () => {
           <div>
             <Label>아이디</Label>
             <CustomInput
-              value={id}
-              onChange={() => setId(id)}
+              value={info.id}
+              onChange={handleChangeId}
               placeholder="아이디를 입력해주세요."
             />
           </div>
           <div>
-            <Label>담당 학교</Label>
-            <Row>
-              <CustomInput
-                value={school}
-                onChange={() => setSchool(school)}
-                placeholder="학교의 이름을 입력해주세요."
-              />
-              <Button text="검색" onClick={handleSearch} disabled={!school} />
-            </Row>
+            <Label>비밀번호</Label>
+            <CustomInput
+              inputType="password"
+              value={info.password}
+              onChange={handleChangePassword}
+              placeholder="비밀번호를 입력해주세요."
+            />
           </div>
           <div>
-            <Label>담당학급</Label>
+            <Label>비밀번호 확인</Label>
             <Row>
               <CustomInput
-                inputType="select"
-                value={grade}
-                onChange={() => setGrade(grade)}
-                placeholder="학급"
-              />
-              <CustomInput
-                inputType="select"
-                value={classInfo}
-                onChange={() => setClassInfo(classInfo)}
-                placeholder="반"
+                inputType="password"
+                value={info.rePassword}
+                onChange={handleChangeRePassword}
+                placeholder="비밀번호를 다시 입력해주세요."
               />
             </Row>
+            <Error>{error && " 비밀번호가 일치하지 않습니다."}</Error>
           </div>
-          <div>
-            <BeforeButton>
+          <Row>
+            <BeforeButton onClick={() => router.push("/join/step1")}>
               <Image
                 src="/assets/icons/ic_chevron_right.svg"
                 width={20}
@@ -87,7 +95,7 @@ const Step2 = () => {
               onClick={handleNext}
               disabled={isDisabled}
             />
-          </div>
+          </Row>
         </Gap>
       </Box>
     </Container>
@@ -143,11 +151,20 @@ const Row = styled.div`
   gap: 11px;
 `;
 
+const Error = styled.p`
+  height: 20px;
+  color: #ef4444;
+  ${(props) => props.theme.fonts.caption1_m};
+`;
+
 const BeforeButton = styled.div`
   display: flex;
   align-items: center;
+  gap: 4px;
   color: ${theme.colors.primary500};
   ${(props) => props.theme.fonts.body3_m};
+  white-space: nowrap;
+  cursor: pointer;
 `;
 
 const StyledButton = styled(Button)`

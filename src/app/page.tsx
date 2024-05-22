@@ -18,6 +18,14 @@ const Home = () => {
     router.push("/");
   };
 
+  const handleChangeId = (id: string) => {
+    setId(id);
+  };
+
+  const handleChangePw = (pw: string) => {
+    setPw(pw);
+  };
+
   return (
     <Container>
       <Image
@@ -31,12 +39,13 @@ const Home = () => {
         <LoginBox>
           <CustomInput
             value={id}
-            onChange={() => setId(id)}
+            onChange={handleChangeId}
             placeholder="아이디"
           />
           <CustomInput
+            inputType="password"
             value={pw}
-            onChange={() => setPw(id)}
+            onChange={handleChangePw}
             placeholder="비밀번호"
           />
         </LoginBox>

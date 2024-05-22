@@ -6,15 +6,24 @@ export type ButtonType = "primary" | "primaryLight";
 export interface ButtonProps {
   text: string;
   type?: ButtonType;
+  size?: "small" | "medium" | "large";
   onClick?: (e: React.MouseEvent) => void;
   disabled?: boolean;
 }
 
 const Button = (props: ButtonProps) => {
-  const { text, type = "primary", onClick, disabled } = props;
+  const { text, size, type = "primary", onClick, disabled } = props;
 
+  let buttonClassName = type;
+  if (size) {
+    buttonClassName += " " + size;
+  }
   return (
-    <StyledButton className={type} onClick={onClick} disabled={disabled}>
+    <StyledButton
+      className={buttonClassName}
+      onClick={onClick}
+      disabled={disabled}
+    >
       {text}
     </StyledButton>
   );
@@ -64,5 +73,10 @@ const StyledButton = styled.button`
       color: ${theme.colors.b400};
       background: ${theme.colors.b200};
     }
+  }
+
+  &.small {
+    width: 72px;
+    height: 44px;
   }
 `;

@@ -66,7 +66,6 @@ const CheckBoxLayout = styled.div<{ $check: boolean }>`
     display: flex;
     align-items: center;
     user-select: none;
-    padding: 0 12px;
     cursor: pointer;
   }
 
