@@ -68,6 +68,7 @@ const ClassAnnouncement = () => {
         <Text>작성일자</Text>
         <Calendar value={date} onChange={handleDateChange} />
       </WriteDate>
+
       <ListBox>
         <Head>
           <div>설명</div>
@@ -109,8 +110,6 @@ const Title = styled.div`
 `;
 
 const WriteDate = styled.div`
-  width: 377px;
-  height: 44px;
   padding: 12px 20px;
   border-radius: 16px;
   background: ${theme.colors.white};
