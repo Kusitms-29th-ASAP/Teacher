@@ -7,20 +7,41 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
+const weekDays = [
+  "일요일",
+  "월요일",
+  "화요일",
+  "수요일",
+  "목요일",
+  "금요일",
+  "토요일",
+];
+
 const ClassAnnouncement = () => {
   const [date, setDate] = useState("");
+  const [name, setName] = useState("김동우");
 
   const handleDateChange = (value: string) => {
     setDate(value);
   };
 
+  function getFormattedDate() {
+    const today = new Date();
+    const month = today.getMonth() + 1;
+    const date = today.getDate();
+    const dayOfWeek = weekDays[today.getDay()];
+
+    return `${month}월 ${date}일 ${dayOfWeek}`;
+  }
+
   const handleShareKakaoClick = () => {
     const { Kakao, location } = window;
+    const todayFormatted = getFormattedDate();
+
     Kakao.Share.sendDefault({
       objectType: "feed",
       content: {
-        title:
-          "4월 22일 월요일, 김동우 학생의 알림장이 게시되었습니다. 지금 바로 확인해보세요!",
+        title: `${todayFormatted}, ${name} 학생의 알림장이 게시되었습니다. 지금 바로 확인해보세요!`,
         imageUrl:
           "https://kr.object.ncloudstorage.com/school-point/default_image/kakao_alarm.png",
         link: {
