@@ -1,14 +1,13 @@
 "use client";
 
 import GetItem from "@/components/common/GetItem";
-import ListItem from "@/components/common/ListItem";
 import { theme } from "@/styles/theme";
-import Image from "next/image";
 import { useState } from "react";
 import styled from "styled-components";
 
 const ClassAnnouncement = () => {
   const [date, setDate] = useState("");
+  const [filter, setFilter] = useState("school");
 
   const handleDateChange = (value: string) => {
     setDate(value);
@@ -16,6 +15,18 @@ const ClassAnnouncement = () => {
 
   return (
     <div>
+      <Title>가정통신문</Title>
+      <Tab>
+        <TabItem
+          onClick={() => setFilter("school")}
+          $selected={filter === "school"}
+        >
+          학교 가정통신문
+        </TabItem>
+        <TabItem onClick={() => setFilter("edu")} $selected={filter === "edu"}>
+          교육청 가정통신문
+        </TabItem>
+      </Tab>
       <ListBox>
         <Head>
           <div>목록</div>
@@ -40,19 +51,33 @@ export default ClassAnnouncement;
 const Title = styled.div`
   color: ${theme.colors.b800};
   ${(props) => props.theme.fonts.heading1_b};
+  margin-bottom: 24px;
 `;
 
-const WriteDate = styled.div`
-  width: 377px;
-  /* height: 44px; */
-  padding: 12px 20px;
+const Tab = styled.div`
+  width: 310px;
+  height: 44px;
   border-radius: 16px;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 16px;
+  border: 1px solid ${theme.colors.b200};
   background: ${theme.colors.white};
+  color: ${theme.colors.b500};
+  ${(props) => props.theme.fonts.body2_m};
 `;
 
-const Text = styled.div`
-  color: ${theme.colors.b500};
-  ${(props) => props.theme.fonts.body3_m};
+const TabItem = styled.div<{ $selected: boolean }>`
+  width: 155px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  color: ${({ $selected, theme }) =>
+    $selected ? theme.colors.primary500 : theme.colors.b500};
+  background: ${({ $selected }) =>
+    $selected ? "rgba(255, 135, 0, 0.20)" : "transparent"};
 `;
 
 const ListBox = styled.div`
@@ -60,6 +85,7 @@ const ListBox = styled.div`
   flex-direction: column;
   padding: 20px;
   gap: 10px;
+  border-radius: 16px;
   color: ${theme.colors.b400};
   ${(props) => props.theme.fonts.body3_m};
   background: ${theme.colors.white};
@@ -76,37 +102,6 @@ const Foot = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-`;
-
-const AddButton = styled.div`
-  display: flex;
-  width: 168px;
-  height: 32px;
-  padding: 8px 10px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 8px;
-  color: #ff7c00;
-  background: #ffe5cd;
-  transition: color 200ms, background-color 200ms;
-  cursor: pointer;
-
-  &:active {
-    background: ${theme.colors.primary200};
-  }
-`;
-
-const Gap = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 40px;
-`;
-
-const Send = styled.div`
-  text-align: center;
-  color: ${theme.colors.primary500};
-  ${(props) => props.theme.fonts.body3_b};
-  cursor: pointer;
 `;
 
 const Save = styled.div`

@@ -1,8 +1,9 @@
 import { theme } from "@/styles/theme";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
+import NOSSR from "./NOSSR";
 
 interface TabProps {
   selected: boolean;
@@ -16,28 +17,36 @@ const Header = () => {
     router.push(path);
   };
   return (
-    <Container>
-      <Image src="/assets/icons/logo.svg" width={143} height={32} alt="logo" />
-      {(pathname === "/classAnnouncement" || "/notification") && (
-        <Div>
-          <Tabbar>
-            <Tab
-              onClick={() => handleTab("/classAnnouncement")}
-              selected={pathname === "/classAnnouncement"}
-            >
-              알림장
-            </Tab>
-            <Tab
-              onClick={() => handleTab("/notification")}
-              selected={pathname === "/notification"}
-            >
-              가정통신문
-            </Tab>
-          </Tabbar>
-          <Info>서울양원숲초등학교 3학년 2반 김교사</Info>
-        </Div>
-      )}
-    </Container>
+    <NOSSR>
+      <Container>
+        <Image
+          src="/assets/icons/logo.svg"
+          width={143}
+          height={32}
+          alt="logo"
+          onClick={() => router.push("/")}
+        />
+        {(pathname === "/classAnnouncement" || "/notification") && (
+          <Div>
+            <Tabbar>
+              <Tab
+                onClick={() => handleTab("/classAnnouncement")}
+                selected={pathname === "/classAnnouncement"}
+              >
+                알림장
+              </Tab>
+              <Tab
+                onClick={() => handleTab("/notification")}
+                selected={pathname === "/notification"}
+              >
+                가정통신문
+              </Tab>
+            </Tabbar>
+            <Info>서울양원숲초등학교 3학년 2반 김교사</Info>
+          </Div>
+        )}
+      </Container>
+    </NOSSR>
   );
 };
 
@@ -49,7 +58,7 @@ const Container = styled.div`
   padding: 0px 80px;
   justify-content: space-between;
   align-items: center;
-  gap: 779px;
+  gap: 50px;
   background: ${theme.colors.b800};
   position: fixed;
   top: 0;

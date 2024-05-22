@@ -1,5 +1,6 @@
 "use client";
 
+import Axios from "@/apis/axios";
 import Button from "@/components/common/Button";
 import CustomInput from "@/components/common/CustomInput";
 import { theme } from "@/styles/theme";
@@ -15,7 +16,20 @@ const Home = () => {
   const [pw, setPw] = useState("");
 
   const handleLogin = () => {
-    router.push("/");
+    Axios.post(`/api/v1/teachers/login`, {
+      username: id,
+      password: pw,
+    })
+      .then((response) => {
+        const accessToken = response.data.accessToken;
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("name", id);
+        router.push("/classAnnouncement");
+        console.log("로그인 성공", response.data);
+      })
+      .catch((error) => {
+        console.log("로그인 실패", error);
+      });
   };
 
   const handleChangeId = (id: string) => {
