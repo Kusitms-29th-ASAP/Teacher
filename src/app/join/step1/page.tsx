@@ -1,22 +1,46 @@
 "use client";
 
+import Axios from "@/apis/axios";
+import getSchool from "@/apis/getShcool";
 import Button from "@/components/common/Button";
 import CustomInput from "@/components/common/CustomInput";
+import { School } from "@/interface/School";
 import { theme } from "@/styles/theme";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 interface Info {
   name: string;
-  school: string;
+  schoolId: number;
+  schoolName: string;
   grade: string;
   classInfo: string;
 }
 
-const gradeData = ["1학년", "2학년", "3학년", "4학년", "5학년", "6학년"];
-const classData = ["1반", "2반", "3반", "4반", "5반", "6반"];
+interface Classroom {
+  grade: string;
+  classNumbers: string[];
+}
+
+const GradeMap: { [key: string]: string } = {
+  FIRST: "1학년",
+  SECOND: "2학년",
+  THIRD: "3학년",
+  FOURTH: "4학년",
+  FIFTH: "5학년",
+  SIXTH: "6학년",
+};
+
+const ClassMap: { [key: string]: string } = {
+  1: "1반",
+  2: "2반",
+  3: "3반",
+  4: "4반",
+  5: "5반",
+  6: "6반",
+};
 
 const Step1 = () => {
   const router = useRouter();
@@ -24,34 +48,88 @@ const Step1 = () => {
   const [openDropdownClass, setOpenDropdownClass] = useState(false);
   const [info, setInfo] = useState<Info>({
     name: "",
-    school: "",
+    schoolId: 0,
+    schoolName: "",
     grade: "",
     classInfo: "",
   });
 
-  let isDisabled = !info.name || !info.school || !info.grade || !info.classInfo;
+  const [schoolList, setSchoolList] = useState<School[]>([]);
+  const [openSchoolList, setOpenSchoolList] = useState(true);
+  /* API로 받아온 학교의 학년 - 반 정보 */
+  const [classrooms, setClassrooms] = useState<Classroom[]>([]);
+  /* 학년 별 반 정보 배열 */
+  const [classNumbers, setClassNumbers] = useState<string[]>([]);
 
+  let isDisabled =
+    !info.name || !info.schoolName || !info.grade || !info.classInfo;
+
+  /* 이름 입력 변경 */
   const handleChangeName = (value: string) => {
     setInfo({ ...info, name: value });
     console.log(info);
   };
 
+  useEffect(() => {
+    console.log("info.grade", info.grade);
+    console.log("classNumbers", classNumbers);
+  }, [info.grade, classNumbers]);
+
+  /* 학년 드롭박스 선택 */
   const handleSelectDropGrade = (selectedDrop: string) => {
     setInfo({ ...info, grade: selectedDrop });
     setOpenDropdownGrade(false);
+    const selectedClassroom = classrooms.find(
+      (classroom) => classroom.grade === selectedDrop
+    );
+    setClassNumbers(selectedClassroom ? selectedClassroom.classNumbers : []);
   };
 
+  /* 학급 드롭박스 선택 */
   const handleSelectDropClass = (selectedDrop: string) => {
     setInfo({ ...info, classInfo: selectedDrop });
     setOpenDropdownClass(false);
   };
 
-  const handleChangeSchool = (value: string) => {
-    setInfo({ ...info, school: value });
+  /* 학교 입력 변경 */
+  const handleChangeSchool = async (value: string) => {
+    setInfo({ ...info, schoolName: value });
+    console.log("change");
+    if (value !== "") {
+      const data = await getSchool(value);
+      setSchoolList(data.schools);
+      setOpenSchoolList(true);
+    } else {
+      setSchoolList([]);
+      setOpenSchoolList(false);
+    }
   };
-  const handleSearch = () => {
-    alert("검색");
+
+  /* 학교 선택 */
+  const handleSchoolClick = async (id: number, name: string) => {
+    setInfo({ ...info, schoolName: name, schoolId: id });
+    setSchoolList([]);
+    setOpenSchoolList(false);
+    const classroomData = await findClassrooms(id);
+    setClassrooms(classroomData);
   };
+
+  /* 학교, 학년의 해당 학급 찾는 API */
+  const findClassrooms = async (schoolId: number): Promise<Classroom[]> => {
+    try {
+      const response = await Axios.get(
+        `/api/v1/schools/${schoolId}/classrooms`
+      );
+      console.log("데이터", response.data);
+      return response.data.classrooms;
+    } catch (error) {
+      console.error("학급 error", error);
+      return [];
+    }
+  };
+
+  /* 검색하기 */
+  const handleSearch = () => {};
 
   const handleSelectClickGrade = () => {
     setOpenDropdownGrade(!openDropdownGrade);
@@ -62,7 +140,16 @@ const Step1 = () => {
   };
 
   const handleNext = () => {
-    router.push("/join/step2");
+    const classInfo = ClassMap[info.classInfo][0] || "";
+
+    const params = new URLSearchParams({
+      name: info.name,
+      schoolId: info.schoolId.toString(),
+      grade: info.grade,
+      className: classInfo,
+    });
+
+    router.push(`/join/step2?${params}`);
   };
 
   return (
@@ -87,19 +174,36 @@ const Step1 = () => {
           <div>
             <Label>담당 학교</Label>
             <Row>
-              <CustomInput
-                value={info.school}
-                onChange={handleChangeSchool}
-                placeholder="학교의 이름을 입력해주세요."
-              />
-              <SearchButton>
-                <Button
-                  text="검색"
-                  onClick={handleSearch}
-                  disabled={!info.school}
-                  size="small"
+              <Contain>
+                <SchoolInput
+                  value={info.schoolName}
+                  onChange={handleChangeSchool}
+                  placeholder="학교의 이름을 입력해주세요."
                 />
-              </SearchButton>
+                <SearchButton>
+                  <Button
+                    text="검색"
+                    onClick={handleSearch}
+                    disabled={!info.schoolName}
+                    size="small"
+                  />
+                </SearchButton>
+                {openSchoolList && schoolList.length > 0 && (
+                  <SearchBoxList>
+                    {schoolList.map((school) => (
+                      <SearchBox
+                        key={school.id}
+                        onClick={() =>
+                          handleSchoolClick(school.id, school.name)
+                        }
+                      >
+                        <h1>{school.name}</h1>
+                        <h2>{school.address}</h2>
+                      </SearchBox>
+                    ))}
+                  </SearchBoxList>
+                )}
+              </Contain>
             </Row>
           </div>
           <div>
@@ -108,19 +212,19 @@ const Step1 = () => {
               <Contain>
                 <CustomInput
                   inputType="select"
-                  value={info.grade}
+                  value={GradeMap[info.grade]}
                   onClick={handleSelectClickGrade}
                   onChange={() => {}}
                   placeholder="학급"
                 />
-                {openDropdownGrade && (
+                {openDropdownGrade && info.schoolName && (
                   <DropDown>
-                    {gradeData.map((data, index) => (
+                    {classrooms?.map((data, index) => (
                       <Cusor
-                        key={index}
-                        onClick={() => handleSelectDropGrade(data)}
+                        key={index + 1}
+                        onClick={() => handleSelectDropGrade(data.grade)}
                       >
-                        {data}
+                        {`${index + 1}학년`}
                       </Cusor>
                     ))}
                   </DropDown>
@@ -129,19 +233,19 @@ const Step1 = () => {
               <Contain>
                 <CustomInput
                   inputType="select"
-                  value={info.classInfo}
+                  value={ClassMap[info.classInfo]}
                   onClick={handleSelectClickClass}
                   onChange={() => {}}
                   placeholder="반"
                 />
-                {openDropdownClass && (
+                {openDropdownClass && info.schoolName && (
                   <DropDown>
-                    {classData.map((data, index) => (
+                    {classNumbers.map((data, index) => (
                       <Cusor
                         key={index}
                         onClick={() => handleSelectDropClass(data)}
                       >
-                        {data}
+                        {`${data}반`}
                       </Cusor>
                     ))}
                   </DropDown>
@@ -221,6 +325,8 @@ const StyledButton = styled(Button)`
 const Contain = styled.div`
   width: 100%;
   position: relative;
+  display: flex;
+  gap: 12px;
 `;
 
 const DropDown = styled.div`
@@ -244,4 +350,44 @@ const DropDown = styled.div`
 
 const Cusor = styled.div`
   cursor: pointer;
+`;
+
+const SchoolInput = styled(CustomInput)`
+  width: 100%;
+  position: absolute;
+  top: 36px;
+  left: 0;
+`;
+
+const SearchBoxList = styled.div`
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 2px 64px 0px rgba(30, 41, 59, 0.06);
+  border-radius: 10px;
+  border: 1px solid ${({ theme }) => theme.colors.b200};
+  position: absolute;
+  top: 44px;
+  left: 0;
+  width: 291px;
+  max-height: 200px;
+  overflow-y: scroll;
+  background: ${({ theme }) => theme.colors.white};
+  z-index: 10;
+`;
+
+const SearchBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  background: ${({ theme }) => theme.colors.white};
+  cursor: pointer;
+
+  h1 {
+    ${({ theme }) => theme.fonts.body3_b};
+    color: ${({ theme }) => theme.colors.b700};
+  }
+  h2 {
+    ${({ theme }) => theme.fonts.caption1_r};
+    color: ${({ theme }) => theme.colors.b400};
+  }
 `;

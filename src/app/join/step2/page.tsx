@@ -1,10 +1,11 @@
 "use client";
 
+import Axios from "@/apis/axios";
 import Button from "@/components/common/Button";
 import CustomInput from "@/components/common/CustomInput";
 import { theme } from "@/styles/theme";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 import styled from "styled-components";
 
@@ -14,13 +15,23 @@ interface Info {
   rePassword: string;
 }
 
+const GRADE = ["FIRST", "SECOND", "THIRD", "FOURTH", "FIFTH", "SIXTH"];
+
 const Step2 = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [info, setInfo] = useState<Info>({
     id: "",
     password: "",
     rePassword: "",
   });
+
+  const name = searchParams.get("name");
+  const school = searchParams.get("schoolId");
+  const grade = searchParams.get("grade");
+  const className = searchParams.get("className");
+
+  const schoolId = school ? parseInt(school, 10) : null;
 
   let error = info.password !== info.rePassword;
   let isDisabled = !info.id || !info.password || !info.rePassword;
@@ -37,7 +48,30 @@ const Step2 = () => {
   };
 
   const handleNext = () => {
-    router.push("/join/step2");
+    console.log(
+      "데이터",
+      name,
+      schoolId,
+      grade,
+      className,
+      info.id,
+      info.password
+    );
+    Axios.post(`/api/v1/teachers`, {
+      name: name,
+      schoolId: schoolId,
+      grade: grade,
+      className: className,
+      username: info.id,
+      password: info.password,
+    })
+      .then((response) => {
+        console.log("회원가입 성공", response.data);
+        router.push("/");
+      })
+      .catch((error) => {
+        console.log("회원가입 실패", error);
+      });
   };
 
   return (

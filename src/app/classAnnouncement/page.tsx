@@ -41,7 +41,7 @@ const ClassAnnouncement = () => {
   };
 
   return (
-    <div>
+    <>
       <Title>알림장</Title>
       <WriteDate>
         <Text>작성일자</Text>
@@ -75,7 +75,7 @@ const ClassAnnouncement = () => {
           </Gap>
         </Foot>
       </ListBox>
-    </div>
+    </>
   );
 };
 
@@ -84,14 +84,16 @@ export default ClassAnnouncement;
 const Title = styled.div`
   color: ${theme.colors.b800};
   ${(props) => props.theme.fonts.heading1_b};
+  margin-bottom: 24px;
 `;
 
 const WriteDate = styled.div`
   width: 377px;
-  /* height: 44px; */
+  height: 44px;
   padding: 12px 20px;
   border-radius: 16px;
   background: ${theme.colors.white};
+  margin-bottom: 16px;
 `;
 
 const Text = styled.div`
@@ -102,8 +104,10 @@ const Text = styled.div`
 const ListBox = styled.div`
   display: flex;
   flex-direction: column;
+  min-width: 700px;
   padding: 20px;
   gap: 10px;
+  border-radius: 16px;
   color: ${theme.colors.b400};
   ${(props) => props.theme.fonts.body3_m};
   background: ${theme.colors.white};
@@ -120,6 +124,7 @@ const Foot = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  white-space: nowrap;
 `;
 
 const AddButton = styled.div`
