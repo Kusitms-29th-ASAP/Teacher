@@ -7,7 +7,6 @@ import { useState } from "react";
 import Image from "next/image";
 import { styled as styledComponents } from "styled-components";
 import dayjs from "dayjs";
-import CustomInput from "./CustomInput";
 
 export interface CalendarProps {
   value: string;
@@ -33,22 +32,16 @@ const Calendar = ({ value, onChange, color }: CalendarProps) => {
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <StyledDemoContainer components={["DatePicker"]}>
           <CustomInputContainer>
-            {/* <CalendarInput
-              value={value}
-              placeholder="날짜를 선택해주세요"
-              onChange={() => {}}
-              readOnly
-            /> */}
+            <StyledMobileDatePicker
+              format="YYYY년 MM월 DD일"
+              value={date}
+              onChange={handleDateChange}
+            />
             <IconImage
               src="/assets/icons/ic_calender.svg"
               alt="calendar"
               width={20}
               height={20}
-            />
-            <StyledMobileDatePicker
-              format="YYYY년 MM월 DD일"
-              value={date}
-              onChange={handleDateChange}
             />
           </CustomInputContainer>
         </StyledDemoContainer>
@@ -59,34 +52,45 @@ const Calendar = ({ value, onChange, color }: CalendarProps) => {
 
 export default Calendar;
 
-const StyledDemoContainer = styled(DemoContainer)({
-  width: "100%",
-  position: "relative",
-});
+const StyledDemoContainer = styled(DemoContainer)`
+  width: 100%;
+  height: 44px;
+  position: relative;
+`;
 
 const CustomInputContainer = styledComponents.div`
   position: relative;
   width: 100%;
+  height: 44px;
+  overflow: hidden;
+  cursor: pointer;
 `;
 
-const StyledMobileDatePicker = styled(MobileDatePicker)({
-  width: "100%",
-  position: "absolute",
-  top: "0",
-  left: "0",
-  opacity: "0",
-  "& .MuiInputBase-root": { height: "44px" },
-});
-
-// const CalendarInput = styled.input`
-//   width: 440px;
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-// `;
-
-const IconImage = styled(Image)({
-  position: "absolute",
-  top: "12px",
-  right: "15px",
-});
+const StyledMobileDatePicker = styled(MobileDatePicker)`
+  width: 100%;
+  height: 44px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  &:focus {
+    outline: none;
+  }
+  & .MuiInputBase-root {
+    height: 44px;
+    outline: none;
+    &:focus {
+      outline: none;
+    }
+  }
+  & .MuiInputBase-input {
+    outline: none;
+    &:focus {
+      outline: none;
+    }
+  }
+`;
+const IconImage = styled(Image)`
+  position: absolute;
+  top: 12px;
+  right: 15px;
+`;

@@ -42,7 +42,7 @@ const Header = () => {
                 가정통신문
               </Tab>
             </Tabbar>
-            <Info>서울양원숲초등학교 3학년 2반 김교사</Info>
+            <Info>서울양원숲초등학교 3학년 7반 오민지 교사</Info>
           </Div>
         )}
       </Container>
