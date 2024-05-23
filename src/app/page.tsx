@@ -25,10 +25,10 @@ const Home = () => {
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("name", id);
         router.push("/classAnnouncement");
-        console.log("로그인 성공", response.data);
+        // console.log("로그인 성공", response.data);
       })
       .catch((error) => {
-        console.log("로그인 실패", error);
+        // console.log("로그인 실패", error);
       });
   };
 

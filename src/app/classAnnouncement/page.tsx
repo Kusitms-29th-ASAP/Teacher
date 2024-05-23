@@ -95,19 +95,19 @@ const ClassAnnouncement = () => {
     authAxios
       .post("/api/v1/classrooms/announcements", dataToSend)
       .then((response) => {
-        console.log(announcementDetails);
+        // console.log(announcementDetails);
         const result = response.data;
-        console.log("Announcement added:", result);
+        // console.log("Announcement added:", result);
       })
       .catch((error) => {
-        console.log(announcementDetails);
-        console.error("Error adding announcement:", error);
+        // console.log(announcementDetails);
+        // console.error("Error adding announcement:", error);
       });
   };
 
   const handleListBoxChange = (updatedItems: any) => {
     setAnnouncementDetails(updatedItems);
-    console.log("수정", updatedItems);
+    // console.log("수정", updatedItems);
   };
 
   return (

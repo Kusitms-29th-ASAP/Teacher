@@ -48,15 +48,15 @@ const Step2 = () => {
   };
 
   const handleNext = () => {
-    console.log(
-      "데이터",
-      name,
-      schoolId,
-      grade,
-      className,
-      info.id,
-      info.password
-    );
+    // console.log(
+    //   "데이터",
+    //   name,
+    //   schoolId,
+    //   grade,
+    //   className,
+    //   info.id,
+    //   info.password
+    // );
     Axios.post(`/api/v1/teachers`, {
       name: name,
       schoolId: schoolId,
@@ -66,11 +66,11 @@ const Step2 = () => {
       password: info.password,
     })
       .then((response) => {
-        console.log("회원가입 성공", response.data);
+        // console.log("회원가입 성공", response.data);
         router.push("/");
       })
       .catch((error) => {
-        console.log("회원가입 실패", error);
+        // console.log("회원가입 실패", error);
       });
   };
 
