@@ -67,12 +67,12 @@ const Step1 = () => {
   /* 이름 입력 변경 */
   const handleChangeName = (value: string) => {
     setInfo({ ...info, name: value });
-    console.log(info);
+    // console.log(info);
   };
 
   useEffect(() => {
-    console.log("info.grade", info.grade);
-    console.log("classNumbers", classNumbers);
+    // console.log("info.grade", info.grade);
+    // console.log("classNumbers", classNumbers);
   }, [info.grade, classNumbers]);
 
   /* 학년 드롭박스 선택 */
@@ -94,7 +94,8 @@ const Step1 = () => {
   /* 학교 입력 변경 */
   const handleChangeSchool = async (value: string) => {
     setInfo({ ...info, schoolName: value });
-    console.log("change");
+    // console.log("change");
+    // console.log(value);
     if (value !== "") {
       const data = await getSchool(value);
       setSchoolList(data.schools);
