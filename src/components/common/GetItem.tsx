@@ -29,6 +29,7 @@ const GetItem = () => {
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
         data={categoryNoti}
+        onChange={() => {}}
       />
       <DeadLine>
         <Image
