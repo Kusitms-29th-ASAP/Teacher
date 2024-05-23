@@ -95,14 +95,9 @@ const ClassAnnouncement = () => {
     authAxios
       .post("/api/v1/classrooms/announcements", dataToSend)
       .then((response) => {
-        // console.log(announcementDetails);
         const result = response.data;
-        // console.log("Announcement added:", result);
       })
-      .catch((error) => {
-        // console.log(announcementDetails);
-        // console.error("Error adding announcement:", error);
-      });
+      .catch((error) => {});
   };
 
   const handleListBoxChange = (updatedItems: any) => {
