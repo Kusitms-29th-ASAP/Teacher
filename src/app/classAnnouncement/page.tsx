@@ -45,16 +45,16 @@ const ClassAnnouncement = () => {
         imageUrl:
           "https://kr.object.ncloudstorage.com/school-point/default_image/kakao_alarm.png",
         link: {
-          mobileWebUrl: "https://developers.kakao.com",
-          webUrl: "https://developers.kakao.com",
+          mobileWebUrl: "https://www.schoolpoint.site",
+          webUrl: "https://www.schoolpoint.site",
         },
       },
       buttons: [
         {
           title: "알림장 바로가기",
           link: {
-            mobileWebUrl: "https://developers.kakao.com",
-            webUrl: "https://developers.kakao.com",
+            mobileWebUrl: "https://www.schoolpoint.site",
+            webUrl: "https://www.schoolpoint.site",
           },
         },
       ],
