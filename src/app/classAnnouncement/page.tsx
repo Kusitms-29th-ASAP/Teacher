@@ -32,13 +32,13 @@ const ClassAnnouncement = () => {
     {
       description: "일기 써오기",
       isLinkedWithTodo: false,
-      todoType: "NONE",
+      todoType: "HOMEWORK",
       deadline: "2024-05-31",
     },
     {
       description: "실내화 챙기기",
       isLinkedWithTodo: false,
-      todoType: "NONE",
+      todoType: "SUPPLY",
       deadline: "2024-05-31",
     },
   ]);
@@ -92,12 +92,12 @@ const ClassAnnouncement = () => {
       announcementDetails: announcementDetails,
       writeDate: writeDate,
     };
+    console.log(dataToSend);
     authAxios
       .post("/api/v1/classrooms/announcements", dataToSend)
       .then((response) => {
         const result = response.data;
-      })
-      .catch((error) => {});
+      });
   };
 
   const handleListBoxChange = (updatedItems: any) => {
