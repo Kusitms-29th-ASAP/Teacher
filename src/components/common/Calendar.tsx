@@ -20,7 +20,7 @@ const Calendar = ({ value, onChange, color }: CalendarProps) => {
   const handleDateChange = (newDate: dayjs.Dayjs | null) => {
     setDate(newDate);
     if (newDate) {
-      onChange(newDate.format("YYYY년 MM월 DD일"));
+      onChange(newDate.format("YYYY-MM-DD"));
     } else {
       setDate(null);
       onChange("");
@@ -33,15 +33,9 @@ const Calendar = ({ value, onChange, color }: CalendarProps) => {
         <StyledDemoContainer components={["DatePicker"]}>
           <CustomInputContainer>
             <StyledMobileDatePicker
-              format="YYYY년 MM월 DD일"
+              format="YYYY-MM-DD"
               value={date}
               onChange={handleDateChange}
-            />
-            <IconImage
-              src="/assets/icons/ic_calender.svg"
-              alt="calendar"
-              width={20}
-              height={20}
             />
           </CustomInputContainer>
         </StyledDemoContainer>

@@ -1,10 +1,11 @@
 "use client";
 
+import authAxios from "@/apis/authAxios";
 import Calendar from "@/components/common/Calendar";
-import ListItem from "@/components/common/ListItem";
+import ListBoxComponent from "@/components/common/ListItem";
 import { theme } from "@/styles/theme";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 
 const weekDays = [
@@ -19,7 +20,32 @@ const weekDays = [
 
 const ClassAnnouncement = () => {
   const [date, setDate] = useState("");
+  const [writeDate, setWriteDate] = useState("");
   const [name, setName] = useState("김동우");
+  const [announcementDetails, setAnnouncementDetails] = useState([
+    {
+      description: "독후감 써오기",
+      isLinkedWithTodo: true,
+      todoType: "HOMEWORK",
+      deadline: "2024-05-26",
+    },
+    {
+      description: "일기 써오기",
+      isLinkedWithTodo: false,
+      todoType: "NONE",
+      deadline: "2024-05-31",
+    },
+    {
+      description: "실내화 챙기기",
+      isLinkedWithTodo: false,
+      todoType: "NONE",
+      deadline: "2024-05-31",
+    },
+  ]);
+
+  const handleWriteDateChange = (value: string) => {
+    setWriteDate(value);
+  };
 
   const handleDateChange = (value: string) => {
     setDate(value);
@@ -61,12 +87,35 @@ const ClassAnnouncement = () => {
     });
   };
 
+  const handleSaveClick = () => {
+    const dataToSend = {
+      announcementDetails: announcementDetails,
+      writeDate: writeDate,
+    };
+    authAxios
+      .post("/api/v1/classrooms/announcements", dataToSend)
+      .then((response) => {
+        console.log(announcementDetails);
+        const result = response.data;
+        console.log("Announcement added:", result);
+      })
+      .catch((error) => {
+        console.log(announcementDetails);
+        console.error("Error adding announcement:", error);
+      });
+  };
+
+  const handleListBoxChange = (updatedItems: any) => {
+    setAnnouncementDetails(updatedItems);
+    console.log("수정", updatedItems);
+  };
+
   return (
     <>
       <Title>알림장</Title>
       <WriteDate>
         <Text>작성일자</Text>
-        <Calendar value={date} onChange={handleDateChange} />
+        <Calendar value={writeDate} onChange={handleWriteDateChange} />
       </WriteDate>
 
       <ListBox>
@@ -74,11 +123,12 @@ const ClassAnnouncement = () => {
           <div>설명</div>
           <div>학부모 투두 연동 여부</div>
           <div>카테고리</div>
-          <div>마감기한 설정</div>
+          <div>마감기한 설정</div>{" "}
         </Head>
-        <ListItem />
-        <ListItem />
-        <ListItem />
+        <ListBoxComponent
+          items={announcementDetails}
+          onChange={handleListBoxChange}
+        />
         <Foot>
           <AddButton>
             <Image
@@ -93,7 +143,7 @@ const ClassAnnouncement = () => {
             <Send onClick={handleShareKakaoClick}>
               카카오톡으로 알림장 보내기
             </Send>
-            <Save>변경사항 저장하기</Save>
+            <Save onClick={handleSaveClick}>변경사항 저장하기</Save>
           </Gap>
         </Foot>
       </ListBox>
@@ -119,13 +169,14 @@ const WriteDate = styled.div`
 const Text = styled.div`
   color: ${theme.colors.b500};
   ${(props) => props.theme.fonts.body3_m};
+  margin-bottom: 10px;
 `;
 
 const ListBox = styled.div`
   display: flex;
   flex-direction: column;
   min-width: 700px;
-  padding: 20px;
+  padding: 20px 30px;
   gap: 10px;
   border-radius: 16px;
   color: ${theme.colors.b400};
@@ -192,3 +243,51 @@ const Save = styled.div`
   ${(props) => props.theme.fonts.body3_b};
   cursor: pointer;
 `;
+
+//   return (
+//     <>
+//       <Title>알림장</Title>
+//       <WriteDate>
+//         <Text>작성일자</Text>
+//         <Calendar value={date} onChange={handleDateChange} />
+//       </WriteDate>
+
+//       <ListBox>
+//         <Head>
+//           <div>설명</div>
+//           <div>학부모 투두 연동 여부</div>
+//           <div>카테고리</div>
+//           <div>마감기한 설정</div>
+//         </Head>
+//         <ListItem />
+//         <Foot>
+//           <AddButton>
+//             <Image
+//               src="/assets/icons/ic_plus.svg"
+//               alt="calendar"
+//               width={24}
+//               height={24}
+//             />
+//             알림장 추가하기
+//           </AddButton>
+//           <Gap>
+//             <Send onClick={handleShareKakaoClick}>
+//               카카오톡으로 알림장 보내기
+//             </Send>
+//             <Save onClick={handleSaveClick}>변경사항 저장하기</Save>
+//           </Gap>
+//         </Foot>
+//       </ListBox>
+//     </>
+//   );
+// };
+{
+  /* <ListBoxComponent
+      items={announcementDetails}
+      onChange={handleListBoxChange}
+    />
+    <ListBoxComponent
+      items={announcementDetails}
+      onChange={handleListBoxChange}
+    /> */
+}

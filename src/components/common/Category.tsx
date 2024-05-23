@@ -6,12 +6,14 @@ interface CategoryProps {
   selectedCategory: string;
   setSelectedCategory: Dispatch<SetStateAction<string>>;
   data: string[];
+  onChange: (newCategory: string) => void;
 }
 
 const Category: React.FC<CategoryProps> = ({
   selectedCategory,
   setSelectedCategory,
   data,
+  onChange,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -22,6 +24,7 @@ const Category: React.FC<CategoryProps> = ({
   const handleOptionClick = (option: string) => {
     setSelectedCategory(option);
     setIsOpen(false);
+    onChange(option);
   };
   return (
     <CategoryContainer>
