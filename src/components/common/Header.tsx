@@ -1,21 +1,87 @@
 import { theme } from "@/styles/theme";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import NOSSR from "./NOSSR";
+import authAxios from "@/apis/authAxios";
 
 interface TabProps {
   selected: boolean;
 }
 
+const gradeMapping: Record<string, string> = {
+  FIRST: "1",
+  SECOND: "2",
+  THIRD: "3",
+  FOURTH: "4",
+  FIFTH: "5",
+  SIXTH: "6",
+};
+
 const Header = () => {
   const pathname = usePathname();
   const router = useRouter();
+  const [userInfo, setUserInfo] = useState({
+    schoolName: "",
+    grade: "",
+    className: "",
+    teacherName: "",
+  });
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [accessToken, setAccessToken] = useState("");
 
   const handleTab = (path: string) => {
-    router.push(path);
+    if (!accessToken) {
+      router.push("/");
+    } else {
+      router.push(path);
+    }
   };
+
+  const handleLogoClick = () => {
+    localStorage.removeItem("accessToken");
+    setAccessToken("");
+    router.push("/");
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      setAccessToken(token);
+    }
+  }, [pathname]);
+
+  useEffect(() => {
+    if (accessToken) {
+      authAxios
+        .get(`/api/v1/teachers`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then((response) => {
+          const { schoolName, grade, className, teacherName } = response.data;
+          const mappedGrade = gradeMapping[grade] || grade;
+          setUserInfo({
+            schoolName,
+            grade: mappedGrade,
+            className,
+            teacherName,
+          });
+          setIsLoggedIn(true);
+        });
+    } else {
+      setIsLoggedIn(false);
+      setUserInfo({
+        schoolName: "",
+        grade: "",
+        className: "",
+        teacherName: "",
+      });
+    }
+  }, [accessToken, pathname]);
+
   return (
     <NOSSR>
       <Container>
@@ -24,7 +90,7 @@ const Header = () => {
           width={143}
           height={32}
           alt="logo"
-          onClick={() => router.push("/")}
+          onClick={handleLogoClick}
         />
         {(pathname === "/classAnnouncement" || "/notification") && (
           <Div>
@@ -42,7 +108,12 @@ const Header = () => {
                 가정통신문
               </Tab>
             </Tabbar>
-            <Info>서울양원숲초등학교 2학년 2반 오민지 교사</Info>
+            {isLoggedIn && (
+              <Info>
+                {userInfo.schoolName} {userInfo.grade}학년 {userInfo.className}
+                반 {userInfo.teacherName} 교사
+              </Info>
+            )}
           </Div>
         )}
       </Container>
@@ -51,6 +122,7 @@ const Header = () => {
 };
 
 export default Header;
+
 const Container = styled.div`
   width: 100%;
   height: 59px;
