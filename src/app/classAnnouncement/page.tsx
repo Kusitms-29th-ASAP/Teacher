@@ -24,21 +24,21 @@ const ClassAnnouncement = () => {
   const [announcementDetails, setAnnouncementDetails] = useState([
     {
       description: "",
-      isLinkedWithTodo: true,
-      todoType: "HOMEWORK",
-      deadline: "2024-05-26",
+      isLinkedWithTodo: false,
+      todoType: "",
+      deadline: "",
     },
     {
-      description: "일기 써오기",
+      description: "",
       isLinkedWithTodo: false,
-      todoType: "HOMEWORK",
-      deadline: "2024-05-31",
+      todoType: "",
+      deadline: "",
     },
     {
-      description: "실내화 챙기기",
+      description: "",
       isLinkedWithTodo: false,
-      todoType: "SUPPLY",
-      deadline: "2024-05-31",
+      todoType: "",
+      deadline: "",
     },
   ]);
 
