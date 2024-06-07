@@ -104,12 +104,13 @@ const ClassAnnouncement = () => {
       .post("/api/v1/classrooms/announcements", dataToSend)
       .then((response) => {
         const result = response.data;
+        console.log("변경사항 저장완료", result);
+        alert("변경사항 저장 완료");
       });
   };
 
   const handleListBoxChange = (updatedItems: any) => {
     setAnnouncementDetails(updatedItems);
-    console.log("zz", updatedItems);
   };
 
   return (

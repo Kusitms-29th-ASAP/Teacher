@@ -104,8 +104,6 @@ const ListBoxComponent: React.FC<ListBoxComponentProps> = ({
   onChange,
   setValue,
 }) => {
-  console.log("Items prop:", items);
-
   const handleItemChange = (
     index: number,
     description: string,
