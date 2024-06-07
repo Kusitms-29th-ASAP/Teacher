@@ -9,6 +9,13 @@ interface CategoryProps {
   onChange?: (newCategory: string) => void;
 }
 
+const reverseCategoryMap: Record<string, string> = {
+  NONE: "가정통신문",
+  SUPPLY: "준비물",
+  HOMEWORK: "숙제",
+  ETC: "기타",
+};
+
 const Category: React.FC<CategoryProps> = ({
   selectedCategory,
   setSelectedCategory,
@@ -31,7 +38,9 @@ const Category: React.FC<CategoryProps> = ({
   return (
     <CategoryContainer>
       <Label onClick={handleCategoryClick}>
-        {selectedCategory || "카테고리"}
+        {reverseCategoryMap[selectedCategory] !== undefined
+          ? reverseCategoryMap[selectedCategory]
+          : selectedCategory || "카테고리"}
       </Label>
       {isOpen && (
         <Dropdown>

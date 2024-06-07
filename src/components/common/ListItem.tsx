@@ -19,6 +19,7 @@ interface ListBoxItemProps {
     todoType: string,
     deadline: string
   ) => void;
+  setValue: (value: any) => void;
 }
 
 interface AnnouncementDetail {
@@ -31,6 +32,7 @@ interface AnnouncementDetail {
 interface ListBoxComponentProps {
   items: AnnouncementDetail[];
   onChange: (updatedItems: AnnouncementDetail[]) => void;
+  setValue: (value: any) => void;
 }
 
 const ListBoxItem: React.FC<ListBoxItemProps> = ({
@@ -39,13 +41,16 @@ const ListBoxItem: React.FC<ListBoxItemProps> = ({
   todoType,
   deadline,
   onChange,
+  setValue,
 }) => {
   const [isChecked, setIsChecked] = useState<boolean>(isLinkedWithTodo);
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(todoType);
 
-  const handleDescriptionChange = (event: any) => {
+  const handleDescriptionChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const newDescription = event.target.value;
-    onChange(newDescription, isLinkedWithTodo, todoType, deadline);
+    onChange(newDescription, isChecked, todoType, deadline);
   };
 
   const handleCheckboxChange = () => {
@@ -67,6 +72,7 @@ const ListBoxItem: React.FC<ListBoxItemProps> = ({
   };
 
   const handleDeadlineChange = (value: string) => {
+    setValue(description);
     onChange(description, isChecked, todoType, value);
   };
 
@@ -96,17 +102,22 @@ const ListBoxItem: React.FC<ListBoxItemProps> = ({
 const ListBoxComponent: React.FC<ListBoxComponentProps> = ({
   items,
   onChange,
+  setValue,
 }) => {
+  console.log("Items prop:", items);
+
   const handleItemChange = (
+    index: number,
     description: string,
     isLinkedWithTodo: boolean,
     todoType: string,
     deadline: string
   ) => {
-    const updatedItems = items.map((item) => {
-      if (item.description === description) {
+    const updatedItems = items.map((item, i) => {
+      if (i === index) {
         return {
           ...item,
+          description,
           isLinkedWithTodo,
           todoType,
           deadline,
@@ -126,7 +137,16 @@ const ListBoxComponent: React.FC<ListBoxComponentProps> = ({
           isLinkedWithTodo={item.isLinkedWithTodo}
           todoType={item.todoType}
           deadline={item.deadline}
-          onChange={handleItemChange}
+          setValue={setValue}
+          onChange={(description, isLinkedWithTodo, todoType, deadline) =>
+            handleItemChange(
+              index,
+              description,
+              isLinkedWithTodo,
+              todoType,
+              deadline
+            )
+          }
         />
       ))}
     </ListBox>
