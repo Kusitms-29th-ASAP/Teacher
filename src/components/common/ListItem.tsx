@@ -59,14 +59,14 @@ const ListBoxItem: React.FC<ListBoxItemProps> = ({
   };
 
   const categoryMap: Record<CategoryKey, string> = {
-    가정통신문: "NONE",
+    가정통신문: "SCHOOL_ANNOUNCEMENT",
     준비물: "SUPPLY",
     숙제: "HOMEWORK",
     기타: "ETC",
   };
 
   const handleCategoryChange = (selectedCategory: string) => {
-    const newTodoType = categoryMap[selectedCategory as CategoryKey] || "NONE";
+    const newTodoType = categoryMap[selectedCategory as CategoryKey];
     setSelectedCategory(selectedCategory as CategoryKey);
     onChange(description, isChecked, newTodoType, deadline);
   };
