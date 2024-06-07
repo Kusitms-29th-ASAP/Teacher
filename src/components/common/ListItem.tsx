@@ -66,7 +66,7 @@ const ListBoxItem: React.FC<ListBoxItemProps> = ({
   };
 
   const handleCategoryChange = (selectedCategory: string) => {
-    const newTodoType = categoryMap[selectedCategory as CategoryKey] || "NONE";
+    const newTodoType = categoryMap[selectedCategory as CategoryKey];
     setSelectedCategory(selectedCategory as CategoryKey);
     onChange(description, isChecked, newTodoType, deadline);
   };

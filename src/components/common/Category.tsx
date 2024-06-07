@@ -10,7 +10,7 @@ interface CategoryProps {
 }
 
 const reverseCategoryMap: Record<string, string> = {
-  NONE: "가정통신문",
+  SCHOOL_ANNOUNCEMENT: "가정통신문",
   SUPPLY: "준비물",
   HOMEWORK: "숙제",
   ETC: "기타",

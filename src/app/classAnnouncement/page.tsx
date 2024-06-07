@@ -1,7 +1,6 @@
 "use client";
 
 import authAxios from "@/apis/authAxios";
-import Calendar from "@/components/common/Calendar";
 import ListBoxComponent from "@/components/common/ListItem";
 import { theme } from "@/styles/theme";
 import Image from "next/image";
@@ -19,13 +18,12 @@ const weekDays = [
 ];
 
 const ClassAnnouncement = () => {
-  const [writeDate, setWriteDate] = useState("");
   const [name, setName] = useState("김동우");
   const [announcementDetails, setAnnouncementDetails] = useState([
     {
       description: "",
       isLinkedWithTodo: false,
-      todoType: "NONE",
+      todoType: "SCHOOL_ANNOUNCEMENT",
       deadline: "2024-05-26",
     },
     {
@@ -41,10 +39,6 @@ const ClassAnnouncement = () => {
       deadline: "2024-05-31",
     },
   ]);
-
-  const handleWriteDateChange = (value: string) => {
-    setWriteDate(value);
-  };
 
   function getFormattedDate() {
     const today = new Date();
@@ -97,13 +91,10 @@ const ClassAnnouncement = () => {
   const handleSaveClick = () => {
     const dataToSend = {
       announcementDetails: announcementDetails,
-      writeDate: writeDate,
     };
-    console.log(dataToSend);
     authAxios
       .post("/api/v1/classrooms/announcements", dataToSend)
       .then((response) => {
-        const result = response.data;
         alert("변경사항 저장 완료");
       });
   };
@@ -115,11 +106,6 @@ const ClassAnnouncement = () => {
   return (
     <>
       <Title>알림장</Title>
-      <WriteDate>
-        <Text>작성일자</Text>
-        <Calendar value={writeDate} onChange={handleWriteDateChange} />
-      </WriteDate>
-
       <ListBox>
         <Head>
           <div>설명</div>
@@ -160,19 +146,6 @@ const Title = styled.div`
   color: ${theme.colors.b800};
   ${(props) => props.theme.fonts.heading1_b};
   margin-bottom: 24px;
-`;
-
-const WriteDate = styled.div`
-  padding: 12px 20px;
-  border-radius: 16px;
-  background: ${theme.colors.white};
-  margin-bottom: 16px;
-`;
-
-const Text = styled.div`
-  color: ${theme.colors.b500};
-  ${(props) => props.theme.fonts.body3_m};
-  margin-bottom: 10px;
 `;
 
 const ListBox = styled.div`
@@ -246,51 +219,3 @@ const Save = styled.div`
   ${(props) => props.theme.fonts.body3_b};
   cursor: pointer;
 `;
-
-//   return (
-//     <>
-//       <Title>알림장</Title>
-//       <WriteDate>
-//         <Text>작성일자</Text>
-//         <Calendar value={date} onChange={handleDateChange} />
-//       </WriteDate>
-
-//       <ListBox>
-//         <Head>
-//           <div>설명</div>
-//           <div>학부모 투두 연동 여부</div>
-//           <div>카테고리</div>
-//           <div>마감기한 설정</div>
-//         </Head>
-//         <ListItem />
-//         <Foot>
-//           <AddButton>
-//             <Image
-//               src="/assets/icons/ic_plus.svg"
-//               alt="calendar"
-//               width={24}
-//               height={24}
-//             />
-//             알림장 추가하기
-//           </AddButton>
-//           <Gap>
-//             <Send onClick={handleShareKakaoClick}>
-//               카카오톡으로 알림장 보내기
-//             </Send>
-//             <Save onClick={handleSaveClick}>변경사항 저장하기</Save>
-//           </Gap>
-//         </Foot>
-//       </ListBox>
-//     </>
-//   );
-// };
-{
-  /* <ListBoxComponent
-      items={announcementDetails}
-      onChange={handleListBoxChange}
-    />
-    <ListBoxComponent
-      items={announcementDetails}
-      onChange={handleListBoxChange}
-    /> */
-}
