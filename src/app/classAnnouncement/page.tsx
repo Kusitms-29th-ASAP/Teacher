@@ -24,18 +24,18 @@ const ClassAnnouncement = () => {
   const [announcementDetails, setAnnouncementDetails] = useState([
     {
       description: "",
-      isLinkedWithTodo: true,
-      todoType: "HOMEWORK",
+      isLinkedWithTodo: false,
+      todoType: "NONE",
       deadline: "2024-05-26",
     },
     {
-      description: "일기 써오기",
+      description: "",
       isLinkedWithTodo: false,
       todoType: "HOMEWORK",
       deadline: "2024-05-31",
     },
     {
-      description: "실내화 챙기기",
+      description: "",
       isLinkedWithTodo: false,
       todoType: "SUPPLY",
       deadline: "2024-05-31",
@@ -88,7 +88,7 @@ const ClassAnnouncement = () => {
       {
         description: "",
         isLinkedWithTodo: false,
-        todoType: "NONE",
+        todoType: "SCHOOL_ANNOUNCEMENT",
         deadline: "",
       },
     ]);
@@ -104,7 +104,6 @@ const ClassAnnouncement = () => {
       .post("/api/v1/classrooms/announcements", dataToSend)
       .then((response) => {
         const result = response.data;
-        console.log("변경사항 저장완료", result);
         alert("변경사항 저장 완료");
       });
   };
@@ -126,7 +125,7 @@ const ClassAnnouncement = () => {
           <div>설명</div>
           <div>학부모 투두 연동 여부</div>
           <div>카테고리</div>
-          <div>마감기한 설정</div>{" "}
+          <div>마감기한 설정</div>
         </Head>
         <ListBoxComponent
           items={announcementDetails}
