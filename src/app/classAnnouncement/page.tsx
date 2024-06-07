@@ -23,20 +23,20 @@ const ClassAnnouncement = () => {
     {
       description: "",
       isLinkedWithTodo: false,
-      todoType: "SCHOOL_ANNOUNCEMENT",
-      deadline: "2024-05-26",
+      todoType: "",
+      deadline: "",
     },
     {
       description: "",
       isLinkedWithTodo: false,
-      todoType: "HOMEWORK",
-      deadline: "2024-05-31",
+      todoType: "",
+      deadline: "",
     },
     {
       description: "",
       isLinkedWithTodo: false,
-      todoType: "SUPPLY",
-      deadline: "2024-05-31",
+      todoType: "",
+      deadline: "",
     },
   ]);
 
