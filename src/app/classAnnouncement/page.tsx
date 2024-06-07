@@ -19,12 +19,11 @@ const weekDays = [
 ];
 
 const ClassAnnouncement = () => {
-  const [date, setDate] = useState("");
   const [writeDate, setWriteDate] = useState("");
   const [name, setName] = useState("김동우");
   const [announcementDetails, setAnnouncementDetails] = useState([
     {
-      description: "독후감 써오기",
+      description: "",
       isLinkedWithTodo: true,
       todoType: "HOMEWORK",
       deadline: "2024-05-26",
@@ -45,10 +44,6 @@ const ClassAnnouncement = () => {
 
   const handleWriteDateChange = (value: string) => {
     setWriteDate(value);
-  };
-
-  const handleDateChange = (value: string) => {
-    setDate(value);
   };
 
   function getFormattedDate() {
@@ -87,6 +82,18 @@ const ClassAnnouncement = () => {
     });
   };
 
+  const handleAddAnnouncement = () => {
+    setAnnouncementDetails([
+      ...announcementDetails,
+      {
+        description: "",
+        isLinkedWithTodo: false,
+        todoType: "NONE",
+        deadline: "",
+      },
+    ]);
+  };
+
   const handleSaveClick = () => {
     const dataToSend = {
       announcementDetails: announcementDetails,
@@ -97,12 +104,13 @@ const ClassAnnouncement = () => {
       .post("/api/v1/classrooms/announcements", dataToSend)
       .then((response) => {
         const result = response.data;
+        console.log("변경사항 저장완료", result);
+        alert("변경사항 저장 완료");
       });
   };
 
   const handleListBoxChange = (updatedItems: any) => {
     setAnnouncementDetails(updatedItems);
-    // console.log("수정", updatedItems);
   };
 
   return (
@@ -123,9 +131,10 @@ const ClassAnnouncement = () => {
         <ListBoxComponent
           items={announcementDetails}
           onChange={handleListBoxChange}
+          setValue={setAnnouncementDetails}
         />
         <Foot>
-          <AddButton>
+          <AddButton onClick={handleAddAnnouncement}>
             <Image
               src="/assets/icons/ic_plus.svg"
               alt="calendar"
