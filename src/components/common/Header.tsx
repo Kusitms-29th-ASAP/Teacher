@@ -110,8 +110,8 @@ const Header = () => {
             </Tabbar>
             {isLoggedIn && (
               <Info>
-                {userInfo.schoolName} {userInfo.grade}학년 {userInfo.className}
-                반 {userInfo.teacherName} 교사
+                서울양00초등학교 {userInfo.grade}학년 {userInfo.className}반{" "}
+                {userInfo.teacherName} 교사
               </Info>
             )}
           </Div>
