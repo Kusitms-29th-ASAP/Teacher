@@ -2,7 +2,6 @@ import axios, { InternalAxiosRequestConfig } from "axios";
 
 const getToken = () => {
   if (typeof window !== "undefined") {
-    console.log("token", localStorage.getItem("accessToken"))
     return localStorage.getItem("accessToken");
   }
   return null;
