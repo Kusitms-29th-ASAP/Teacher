@@ -1,7 +1,6 @@
 "use client";
 
 import authAxios from "@/apis/authAxios";
-import Calendar from "@/components/common/Calendar";
 import ListBoxComponent from "@/components/common/ListItem";
 import { notify } from "@/hooks/notify";
 import { theme } from "@/styles/theme";
@@ -20,7 +19,6 @@ const weekDays = [
 ];
 
 const ClassAnnouncement = () => {
-  const [writeDate, setWriteDate] = useState("");
   const [name, setName] = useState("김동우");
   const [announcementDetails, setAnnouncementDetails] = useState([
     {
@@ -30,7 +28,7 @@ const ClassAnnouncement = () => {
       deadline: "2024-09-06",
     },
     {
-      description: "일기 써오기",
+      description: "",
       isLinkedWithTodo: false,
       todoType: "HOMEWORK",
       deadline: "2024-09-06",
@@ -42,10 +40,6 @@ const ClassAnnouncement = () => {
       deadline: "2024-09-06",
     },
   ]);
-
-  const handleWriteDateChange = (value: string) => {
-    setWriteDate(value);
-  };
 
   function getFormattedDate() {
     const today = new Date();
@@ -89,7 +83,7 @@ const ClassAnnouncement = () => {
       {
         description: "",
         isLinkedWithTodo: false,
-        todoType: "NONE",
+        todoType: "SCHOOL_ANNOUNCEMENT",
         deadline: "",
       },
     ]);
@@ -98,9 +92,7 @@ const ClassAnnouncement = () => {
   const handleSaveClick = () => {
     const dataToSend = {
       announcementDetails: announcementDetails,
-      writeDate: writeDate,
     };
-    console.log(dataToSend);
     authAxios
       .post("/api/v1/classrooms/announcements", dataToSend)
       .then((response) => {
@@ -120,17 +112,12 @@ const ClassAnnouncement = () => {
   return (
     <>
       <Title>알림장</Title>
-      <WriteDate>
-        <Text>작성일자</Text>
-        <Calendar value={writeDate} onChange={handleWriteDateChange} />
-      </WriteDate>
-
       <ListBox>
         <Head>
           <div>설명</div>
           <div>학부모 투두 연동 여부</div>
           <div>카테고리</div>
-          <div>마감기한 설정</div>{" "}
+          <div>마감기한 설정</div>
         </Head>
         <ListBoxComponent
           items={announcementDetails}
@@ -165,19 +152,6 @@ const Title = styled.div`
   color: ${theme.colors.b800};
   ${(props) => props.theme.fonts.heading1_b};
   margin-bottom: 24px;
-`;
-
-const WriteDate = styled.div`
-  padding: 12px 20px;
-  border-radius: 16px;
-  background: ${theme.colors.white};
-  margin-bottom: 16px;
-`;
-
-const Text = styled.div`
-  color: ${theme.colors.b500};
-  ${(props) => props.theme.fonts.body3_m};
-  margin-bottom: 10px;
 `;
 
 const ListBox = styled.div`
