@@ -1,10 +1,16 @@
 "use client";
 
 import { theme } from "@/styles/theme";
+import { Toaster } from "react-hot-toast";
 import styled from "styled-components";
 
 const layout = (props: any) => {
-  return <Container>{props.children}</Container>;
+  return (
+    <Container>
+      <Toaster />
+      {props.children}
+    </Container>
+  );
 };
 
 export default layout;

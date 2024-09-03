@@ -2,6 +2,7 @@
 
 import authAxios from "@/apis/authAxios";
 import ListBoxComponent from "@/components/common/ListItem";
+import { notify } from "@/hooks/notify";
 import { theme } from "@/styles/theme";
 import Image from "next/image";
 import { useState } from "react";
@@ -21,22 +22,22 @@ const ClassAnnouncement = () => {
   const [name, setName] = useState("김동우");
   const [announcementDetails, setAnnouncementDetails] = useState([
     {
-      description: "",
+      description: "수학익힘책 67~70 p. 풀어오기",
       isLinkedWithTodo: false,
-      todoType: "",
-      deadline: "",
+      todoType: "HOMEWORK",
+      deadline: "2024-09-06",
     },
     {
       description: "",
       isLinkedWithTodo: false,
-      todoType: "",
-      deadline: "",
+      todoType: "HOMEWORK",
+      deadline: "2024-09-06",
     },
     {
-      description: "",
-      isLinkedWithTodo: false,
-      todoType: "",
-      deadline: "",
+      description: "실내화 챙기기",
+      isLinkedWithTodo: true,
+      todoType: "SUPPLY",
+      deadline: "2024-09-06",
     },
   ]);
 
@@ -95,7 +96,12 @@ const ClassAnnouncement = () => {
     authAxios
       .post("/api/v1/classrooms/announcements", dataToSend)
       .then((response) => {
-        alert("변경사항 저장 완료");
+        const result = response.data;
+        console.log("알림장 작성 완료", result);
+        notify({ text: "알림장 작성 완료", icon: "🧡", type: "success" });
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 
