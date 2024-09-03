@@ -106,6 +106,9 @@ const ClassAnnouncement = () => {
         const result = response.data;
         console.log("변경사항 저장완료", result);
         alert("변경사항 저장 완료");
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 

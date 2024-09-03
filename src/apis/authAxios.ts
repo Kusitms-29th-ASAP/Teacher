@@ -1,8 +1,8 @@
-import axios from "axios";
+import axios, { InternalAxiosRequestConfig } from "axios";
 
 const getToken = () => {
   if (typeof window !== "undefined") {
-    // console.log("token", localStorage.getItem("accessToken"))
+    console.log("token", localStorage.getItem("accessToken"))
     return localStorage.getItem("accessToken");
   }
   return null;
@@ -15,4 +15,15 @@ const authAxios = axios.create({
     "Content-Type": "application/json;charset=UTF-8",
   },
 });
+
+authAxios.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+  const token = getToken();
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+});
+
+
 export default authAxios;
